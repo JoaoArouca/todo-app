@@ -51,14 +51,6 @@ class TaskController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      */
     public function read(int $id)
@@ -94,9 +86,39 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+
+    public function updateStatus(Request $request, $id)
     {
-        //
+        try {
+            $task = Task::find($id);
+            // Valida se existe uma task com o ID recebido no parâmetro
+            if (!$task) {
+                throw new Exception('Task do not exist', 404);
+            }
+            // Valida se o status da task é igual ao status passado na requisição
+            if ($task->is_completed === $request->is_completed) {
+                throw new Exception('The task already has this status', 404);
+            }
+            // Valida se a requisição possui apenas os 2 valores permitdos
+            if (
+                ($request->is_completed === 0) |
+                ($request->is_completed === 1)
+            ) {
+                $task->is_completed = $request->input('is_completed');
+                $task->save();
+
+                return response()->json($task, 200);
+            } else {
+                throw new Exception('Invalid status value', 400);
+            }
+        } catch (Exception $e) {
+            return response()->json(
+                [
+                    'error' => $e->getMessage(),
+                ],
+                (int) $e->getCode()
+            );
+        }
     }
 
     /**
