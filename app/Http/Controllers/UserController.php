@@ -13,7 +13,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::select('id', 'name', 'email')
+            ->with('tasks')
+            ->get();
+
+        return response()->json($users);
     }
 
     public function create(Request $request)
@@ -39,7 +43,10 @@ class UserController extends Controller
             );
 
             if ($validator->fails()) {
-                throw new Exception(['errors' => $validator->errors()], 400);
+                throw new Exception(
+                    implode(',', $validator->errors()->all()),
+                    400
+                ); // converte o array de mensagens de erro em uma única string separada por vírgula
             }
 
             $data = $request->only(['name', 'email', 'password']);

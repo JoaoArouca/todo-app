@@ -17,7 +17,7 @@ class TaskController extends Controller
         //
     }
 
-    public function create(User $user, Request $request)
+    public function create(int $user_id, Request $request)
     {
         try {
             // Valida a requisição recebida
@@ -34,10 +34,10 @@ class TaskController extends Controller
                 throw new Exception($validator->errors()->first(), 400);
             }
 
-            $validated_user = User::find($user->id);
-            if (!$validated_user) {
+            $user = User::find($user_id);
+            if (!$user) {
                 // Valida se existe o usuário passado
-                throw new Exception('User do not exist', 404);
+                throw new Exception('User do not exist', 400);
             }
 
             $task = $user->tasks()->create($validator->validated());
@@ -73,14 +73,6 @@ class TaskController extends Controller
                 $e->getCode()
             );
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**
@@ -161,8 +153,19 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        try {
+            $task = Task::find($id);
+            if (!$task) {
+                throw new Exception('Task do not exist', 404);
+            }
+            return response()->json(Task::destroy($id), 200);
+        } catch (Exception $e) {
+            return response()->json(
+                ['error' => $e->getMessage()],
+                $e->getCode()
+            );
+        }
     }
 }
