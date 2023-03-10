@@ -19,8 +19,8 @@ use App\Http\Controllers\UserController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+// Task
 Route::post('/task/{user}', [TaskController::class, 'create']); // Create task for an user
 
-
+// User
 Route::post('/user', [UserController::class, 'create']); // Create user

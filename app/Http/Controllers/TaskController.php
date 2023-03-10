@@ -17,39 +17,37 @@ class TaskController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(User $user, Request $request)
     {
-        try
-            {   // Valida a requisição recebida
-                $validator = Validator::make($request->all(), [
-                    'content' => 'required|string',
-                ]);
+        try {
+            // Valida a requisição recebida
+            $validator = Validator::make($request->all(), [
+                'content' => 'required|string',
+            ]);
 
-                $validator->setCustomMessages([
-                    'required' => 'Campo obrigatório.',
-                    'string' => 'O campo deve ser uma string.',
-                ]);
+            $validator->setCustomMessages([
+                'required' => 'Campo obrigatório.',
+                'string' => 'O campo deve ser uma string.',
+            ]);
 
-                if ($validator->fails()) {
-                    print($validator->errors());
-                    throw new Exception($validator->errors()->first(), 400);
-                }
-
-                $validated_user = User::find($user->id);
-                if (!$validated_user) { // Valida se existe o usuário passado
-                    throw new Exception("User do not exist", 404);
-                }
-
-                $task = $user->tasks()->create($validator->validated());
-                return response()->json($task, 201);
+            if ($validator->fails()) {
+                throw new Exception($validator->errors()->first(), 400);
             }
-        catch (Exception $e)
-            {
-                return response()->json(['error' => $e->getMessage()], $e->getCode());
+
+            $validated_user = User::find($user->id);
+            if (!$validated_user) {
+                // Valida se existe o usuário passado
+                throw new Exception('User do not exist', 404);
             }
+
+            $task = $user->tasks()->create($validator->validated());
+            return response()->json($task, 201);
+        } catch (Exception $e) {
+            return response()->json(
+                ['error' => $e->getMessage()],
+                $e->getCode()
+            );
+        }
     }
 
     /**
