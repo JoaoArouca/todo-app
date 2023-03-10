@@ -97,7 +97,7 @@ class TaskController extends Controller
             }
             // Valida se o status da task é igual ao status passado na requisição
             if ($task->is_completed === $request->is_completed) {
-                throw new Exception('The task already has this status', 404);
+                throw new Exception('The task already has this status', 400);
             }
             // Valida se a requisição possui apenas os 2 valores permitdos
             if (
@@ -121,6 +121,43 @@ class TaskController extends Controller
         }
     }
 
+    public function updateContent(Request $request, $id)
+    {
+        try {
+            // Valida a requisição
+            $validator = Validator::make($request->all(), [
+                'content' => 'required|string',
+            ]);
+
+            $validator->setCustomMessages([
+                'required' => 'Campo obrigatório.',
+                'string' => 'O campo deve ser uma string.',
+            ]);
+
+            if ($validator->fails()) {
+                throw new Exception($validator->errors()->first(), 404);
+            }
+            // Valida se existe uma task com o ID recebido
+            $task = Task::find($id);
+            if (!$task) {
+                throw new Exception('Task do not exist', 404);
+            }
+            // Valida se o conteúdo da task é igual ao passado na requisição
+            if ($task->content === $request->content) {
+                throw new Exception('The task already has this content', 400);
+            }
+
+            $task->content = $request->input('content');
+            $task->save();
+
+            return response()->json($task, 200);
+        } catch (Exception $e) {
+            return response()->json(
+                ['error' => $e->getMessage()],
+                $e->getCode()
+            );
+        }
+    }
     /**
      * Remove the specified resource from storage.
      */
