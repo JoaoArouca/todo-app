@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Exception;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -49,10 +50,21 @@ class UserController extends Controller
                 ); // converte o array de mensagens de erro em uma única string separada por vírgula
             }
 
-            $data = $request->only(['name', 'email', 'password']);
-            $user = User::create($data);
+            $user = User::create([
+                'name' => $request['name'],
+                'email' => $request['email'],
+                'password' => bcrypt($request['password']),
+            ]);
 
-            return response()->json($user, 201);
+            $token = $user->createToken($request->email)->plainTextToken;
+
+            return response()->json(
+                [
+                    'user' => $user,
+                    'token' => $token,
+                ],
+                201
+            );
         } catch (Exception $e) {
             return response()->json(
                 ['error' => $e->getMessage()],
