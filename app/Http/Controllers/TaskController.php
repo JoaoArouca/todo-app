@@ -61,9 +61,26 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function read(int $id)
     {
-        //
+        try {
+            if (!$id) {
+                // Verifica se o ID foi passado corretamente
+                throw new Exception('unspecified user', 404);
+            }
+
+            $user = User::find($id);
+            if (!$user) {
+                // Valida se existe um usuário com o id passado no parâmetro
+                throw new Exception('User do not exist', 404);
+            }
+            return response()->json(['tasks' => $user->tasks], 200);
+        } catch (Exception $e) {
+            return response()->json(
+                ['error' => $e->getMessage()],
+                $e->getCode()
+            );
+        }
     }
 
     /**

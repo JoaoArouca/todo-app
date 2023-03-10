@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 // Task
 Route::post('/task/{user}', [TaskController::class, 'create']); // Create task for an user
+Route::get('/task/{id}', [TaskController::class, 'read']); // read all tasks by user id
 
 // User
 Route::post('/user', [UserController::class, 'create']); // Create user
