@@ -22,7 +22,7 @@ class AuthController extends Controller
             $user = User::where('email', $fields['email'])->first();
 
             if (!$user || !Hash::check($fields['password'], $user->password)) {
-                throw new Exception('Email ou Senha inválidos', 404);
+                throw new Exception('Email ou Senha inválidos', 401);
             }
 
             $token = $user->createToken($request->email)->plainTextToken;

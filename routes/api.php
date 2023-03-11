@@ -35,7 +35,7 @@ Route::group(['middleware' => [AuthenticateSanctum::class]], function () {
 });
 
 // User
-Route::post('/user', [UserController::class, 'create']); // Create user
+Route::post('/user', [UserController::class, 'create'])->name('create-user'); // Create user
 
 // Login
-Route::post('login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
