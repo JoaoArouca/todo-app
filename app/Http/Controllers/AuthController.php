@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\AuthManager;
 
 class AuthController extends Controller
 {
@@ -38,5 +40,23 @@ class AuthController extends Controller
                 $e->getCode()
             );
         }
+    }
+
+    protected $auth;
+
+    public function __construct(AuthManager $auth)
+    {
+        $this->auth = $auth;
+    }
+
+    public function logout(Request $request)
+    {
+        $this->auth
+            ->guard('sanctum')
+            ->user()
+            ->tokens()
+            ->delete();
+
+        return response()->json(['message' => 'Logged out successfully.']);
     }
 }

@@ -28,10 +28,14 @@ Route::group(['middleware' => [AuthenticateSanctum::class]], function () {
 
     //User
     Route::get('/user', [UserController::class, 'index']); // Read all users
+    Route::delete('/user/{id}', [UserController::class, 'destroy']); // delete user by id
+
+    // Logout
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
 
 // User
 Route::post('/user', [UserController::class, 'create']); // Create user
-Route::delete('/user/{id}', [UserController::class, 'destroy']); // delete user by id
+
 // Login
 Route::post('login', [AuthController::class, 'login']);
