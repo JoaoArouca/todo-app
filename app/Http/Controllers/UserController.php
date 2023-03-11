@@ -110,6 +110,17 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $user = User::find($id);
+            if (!$user) {
+                throw new Exception('User not found', 404);
+            }
+            return response()->json(User::destroy($id), 201);
+        } catch (Exception $e) {
+            return response()->json(
+                ['error' => $e->getMessage()],
+                $e->getCode()
+            );
+        }
     }
 }

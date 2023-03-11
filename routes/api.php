@@ -29,5 +29,6 @@ Route::delete('/task/{id}', [TaskController::class, 'destroy']); // delete task 
 // User
 Route::post('/user', [UserController::class, 'create']); // Create user
 Route::get('/user', [UserController::class, 'index']); // Read all users
+Route::delete('/user/{id}', [UserController::class, 'destroy']); // delete user by id
 // Login
 Route::post('login', [AuthController::class, 'login']);
