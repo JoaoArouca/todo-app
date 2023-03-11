@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +29,5 @@ Route::delete('/task/{id}', [TaskController::class, 'destroy']); // delete task 
 // User
 Route::post('/user', [UserController::class, 'create']); // Create user
 Route::get('/user', [UserController::class, 'index']); // Read all users
+// Login
+Route::post('login', [AuthController::class, 'login']);
