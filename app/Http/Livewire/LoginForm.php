@@ -40,7 +40,7 @@ class LoginForm extends Component
             Auth::login($modelUser);
 
             session()->put('token', $token);
-            return redirect()->to('/dashboard');
+            return redirect()->to('http://127.0.0.1:8000/home');
         } else {
             $this->addError('email', $response->getContent());
         }

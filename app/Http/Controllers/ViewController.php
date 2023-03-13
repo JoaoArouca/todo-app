@@ -15,4 +15,9 @@ class ViewController extends Controller
     {
         return view('register');
     }
+
+    public function home()
+    {
+        return view('home');
+    }
 }

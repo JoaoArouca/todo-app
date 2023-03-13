@@ -6,13 +6,19 @@
         <form wire:submit.prevent="login">
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" placeholder="Seu e-mail" wire:model.lazy="email">
-                @error('email') <span class="text-danger">{{ $message }}</span> @enderror
+                <input type="email" class="form-control" id="email" placeholder="Seu e-mail"
+                    wire:model.lazy="email">
+                @error('email')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="form-group">
                 <label for="password">Senha</label>
-                <input type="password" class="form-control" id="password" placeholder="Sua senha" wire:model.lazy="password">
-                @error('password') <span class="text-danger">{{ $message }}</span> @enderror
+                <input type="password" class="form-control" id="password" placeholder="Sua senha"
+                    wire:model.lazy="password">
+                @error('password')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="form-check">
                 <input type="checkbox" class="form-check-input" id="remember" wire:model.lazy="remember">
@@ -25,6 +31,6 @@
     </div>
     <div class="card-footer text-center">
         <p class="mb-0">Ainda não tem uma conta?</p>
-        <a  class="custom-link" href="{{ route('register-page') }}">Registrar</a>
+        <a class="custom-link" href="{{ route('register-page') }}">Registrar</a>
     </div>
 </div>

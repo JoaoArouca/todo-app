@@ -39,11 +39,10 @@ class RegisterForm extends Component
             $user = $content['user'];
             $token = $content['token'];
             $modelUser = User::where('email', $this->email)->first();
-            info($modelUser);
             Auth::login($modelUser);
 
             session()->put('token', $token);
-            return redirect()->to('/dashboard');
+            return redirect()->to('http://127.0.0.1:8000/home');
         } else {
             $this->addError('email', $response->getContent());
         }

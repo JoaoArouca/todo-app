@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ViewController;
+use App\Http\Middleware\AuthenticateSanctum;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +15,12 @@ use App\Http\Controllers\ViewController;
 |
 */
 
-Route::get('/', [ViewController::class, 'login'])->name('login-page');
+Route::get('/', [ViewController::class, 'login'])->name('login-page'); // rota de login
 Route::get('/register', [ViewController::class, 'register'])->name(
+    // rota de registro
     'register-page'
 );
+
+Route::group(['middleware' => [AuthenticateSanctum::class]], function () {
+    Route::get('/home', [ViewController::class, 'home'])->name('home-page');
+});
